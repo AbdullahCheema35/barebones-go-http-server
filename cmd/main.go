@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/AbdullahCheema35/barebones-go-http-server.git/cmd/http"
 )
@@ -18,7 +19,12 @@ func handleRoot(a http.ResponseWriter, b *http.Request) {
 	a.Write([]byte(body))
 }
 
+func handleUsers(w http.ResponseWriter, b *http.Request) {
+	log.Println("\nHandling Users")
+}
+
 func main() {
 	http.HandleFunc("/", handleRoot)
+	http.HandleFunc("/users", handleUsers)
 	http.StartHttpServer(":8080", nil)
 }

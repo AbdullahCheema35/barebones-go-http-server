@@ -23,7 +23,9 @@ func handleClient(conn net.Conn, handler Handler) {
 
 	log.Printf("Received Request: %s\n", req.Req)
 
-	resp := Response{}
+	resp := Response{
+		Conn: conn,
+	}
 
 	handler.ServeHTTP(&resp, &req)
 
