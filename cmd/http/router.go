@@ -1,15 +1,32 @@
 package http
 
+import (
+	"strings"
+)
+
 type Router struct {
 	handlers map[string]Handler
 }
 
 func (r *Router) Handler(pattern string) Handler {
-	return r.handlers[pattern]
+	handler, ok := r.handlers[pattern]
+	if !ok {
+		notFoundHandler := HandlerFunc(func(resp ResponseWriter, req *Request) {
+			// resp.WriteHeader(404)
+			resp.Write([]byte("HTTP/1.0 404 Not Found\r\n\r\n"))
+			resp.Write([]byte("HTTP Error: 404 Not Found"))
+		})
+		return notFoundHandler
+	}
+	return handler
 }
 
 func (r *Router) ServeHTTP(res ResponseWriter, req *Request) {
-	handler := r.Handler("/")
+	trimmedEndpoint := strings.TrimSuffix(req.Endpoint, "/")
+	if trimmedEndpoint == "" {
+		trimmedEndpoint = "/"
+	}
+	handler := r.Handler(trimmedEndpoint)
 	handler.ServeHTTP(res, req)
 }
 

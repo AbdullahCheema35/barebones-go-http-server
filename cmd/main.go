@@ -20,7 +20,7 @@ func handleRoot(a http.ResponseWriter, b *http.Request) {
 }
 
 func handleUsers(w http.ResponseWriter, b *http.Request) {
-	log.Println("\nHandling Users")
+	log.Println("Handling Users")
 }
 
 func main() {

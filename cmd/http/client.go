@@ -17,16 +17,13 @@ func handleClient(conn net.Conn, handler Handler) {
 		return
 	}
 
-	req := Request{
-		Req: string(buff[:n]),
-	}
+	log.Printf("Received Request: %s\n", string(buff[:n]))
 
-	log.Printf("Received Request: %s\n", req.Req)
+	req := parseRequest(string(buff[:n]))
 
 	resp := Response{
 		Conn: conn,
 	}
 
-	handler.ServeHTTP(&resp, &req)
-
+	handler.ServeHTTP(&resp, req)
 }

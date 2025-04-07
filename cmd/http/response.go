@@ -20,7 +20,7 @@ type Response struct {
 }
 
 func (r *Response) Write(data []byte) (int, error) {
-	n, err := fmt.Fprint(r.Conn, data)
+	n, err := fmt.Fprintf(r.Conn, "%s", data)
 	return n, err
 }
 
