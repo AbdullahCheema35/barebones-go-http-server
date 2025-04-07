@@ -1,13 +1,11 @@
 package http
 
 type Handler interface {
-	// ServeHTTP(ResponseWriter, *Request)
-	ServeHTTP(string, string)
+	ServeHTTP(ResponseWriter, *Request)
 }
 
-// type HandlerFunc func(ResponseWriter, *Request)
-// type HandlerFunc func(string, string)
+type HandlerFunc func(ResponseWriter, *Request)
 
-// func (h HandlerFunc) ServeHTTP(res, req string) {
-
-// }
+func (f HandlerFunc) ServeHTTP(res ResponseWriter, req *Request) {
+	f(res, req)
+}

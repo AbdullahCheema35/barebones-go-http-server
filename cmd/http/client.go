@@ -6,7 +6,7 @@ import (
 	"net"
 )
 
-func handleConnection(conn net.Conn) {
+func handleClient(conn net.Conn, handler Handler) {
 	defer conn.Close()
 
 	var buff = make([]byte, 1024)
@@ -17,6 +17,14 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 
-	log.Printf("Received Request: %s\n", string(buff[:n]))
+	req := Request{
+		Req: string(buff[:n]),
+	}
+
+	log.Printf("Received Request: %s\n", req.Req)
+
+	resp := Response{}
+
+	handler.ServeHTTP(&resp, &req)
 
 }

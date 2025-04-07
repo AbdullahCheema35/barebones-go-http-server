@@ -35,6 +35,6 @@ func (s *Server) Serve() error {
 			log.Println("Error accepting connection:", err)
 			continue
 		}
-		go handleConnection(conn)
+		go handleClient(conn, s.Handler)
 	}
 }

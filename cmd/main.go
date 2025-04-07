@@ -1,19 +1,24 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/AbdullahCheema35/barebones-go-http-server.git/cmd/http"
 )
 
-func handleRoot(res, req string) {
-	// Implement
-}
+func handleRoot(a http.ResponseWriter, b *http.Request) {
+	const statusCode = 200
+	const statusText = "OK"
+	const body = "Hello World"
 
-func handleEnpoint(res, req string) {
-	// Implement
+	a.Write([]byte(fmt.Sprintf("HTTP/1.0 %d %s\r\n", statusCode, statusText)))
+	a.Write([]byte(fmt.Sprintf("Content-Type: text/plain\r\n")))
+	a.Write([]byte(fmt.Sprintf("Content-Length: %d\r\n", len(body))))
+	a.Write([]byte(fmt.Sprintf("\r\n")))
+	a.Write([]byte(body))
 }
 
 func main() {
 	http.HandleFunc("/", handleRoot)
-	http.HandleFunc("/users", handleEnpoint)
 	http.StartHttpServer(":8080", nil)
 }
