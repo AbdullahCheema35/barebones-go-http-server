@@ -9,8 +9,8 @@ type Request struct {
 }
 
 func parseRequest(req string) *Request {
-	fistLine := strings.Split(req, "\n")
-	parts := strings.Split(fistLine[0], " ")
+	firstLine := strings.Split(req, "\r\n")[0]
+	parts := strings.Split(firstLine, " ")
 
 	return &Request{
 		Method:   parts[0],
