@@ -1,33 +1,49 @@
 package http
 
-import (
-	"fmt"
-	"net"
-)
-
-type ResponseWriter interface {
-	Header() Header
-	Write([]byte) (int, error)
-	WriteHeader(int)
-}
+import "fmt"
 
 type Response struct {
-	Conn       net.Conn
-	StatusCode int
-	Status     string
-	RespHeader Header
-	Body       string
+	StatusCode    int
+	Status        string
+	Proto         string
+	ProtoMajor    int
+	ProtoMinor    int
+	ContentLength int64
+	Headers       Header
+	Body          string
+	Request       *Request
 }
 
-func (r *Response) Write(data []byte) (int, error) {
-	n, err := fmt.Fprintf(r.Conn, "%s", data)
-	return n, err
+func (r *Response) setResponseStatus(code int) {
+	r.StatusCode = code
+	r.Status = getStatusFromCode(code)
 }
 
-func (r *Response) WriteHeader(code int) {
-	// Implement
+func (r *Response) getEscapedStatusHeader() string {
+	return fmt.Sprintf("%s %d %s\r\n", r.Proto, r.StatusCode, r.Status)
 }
 
-func (r *Response) Header() Header {
-	return r.RespHeader
+func (r *Response) getOtherHeaders() []string {
+	return r.Headers.getAllHeaders()
+}
+
+func newResponse(request *Request) *Response {
+	return &Response{
+		Request: request,
+		Proto:   request.Proto,
+		Headers: make(Header),
+	}
+}
+
+func getStatusFromCode(code int) string {
+	switch code {
+	case 200:
+		return "OK"
+	case 404:
+		return "Not Found"
+	case 400:
+		return "Bad Request"
+	default:
+		return "Unknown Code"
+	}
 }

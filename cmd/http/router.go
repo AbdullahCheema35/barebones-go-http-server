@@ -11,11 +11,6 @@ type Router struct {
 func (r *Router) Handler(pattern string) Handler {
 	handler, ok := r.handlers[pattern]
 	if !ok {
-		notFoundHandler := HandlerFunc(func(resp ResponseWriter, req *Request) {
-			// resp.WriteHeader(404)
-			resp.Write([]byte("HTTP/1.0 404 Not Found\r\n\r\n"))
-			resp.Write([]byte("HTTP Error: 404 Not Found"))
-		})
 		return notFoundHandler
 	}
 	return handler
@@ -45,3 +40,8 @@ func HandleFunc(pattern string, f func(ResponseWriter, *Request)) {
 func Handle(pattern string, h Handler) {
 	DefaultRouter.handlers[pattern] = h
 }
+
+var notFoundHandler = HandlerFunc(func(resp ResponseWriter, req *Request) {
+	resp.WriteHeader(404)
+	resp.Write([]byte("HTTP Error: 404\n\nDoes Not Exist"))
+})
