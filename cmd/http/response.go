@@ -30,8 +30,8 @@ func (r *Response) getOtherHeaders() []string {
 func newResponse(request *Request) *Response {
 	return &Response{
 		Request: request,
-		Proto:   request.Proto,
-		Headers: make(Header),
+		Proto:   supportedHttpProtocol,
+		Headers: newHeaderWithTypicalValues(),
 	}
 }
 

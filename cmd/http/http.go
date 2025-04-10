@@ -4,10 +4,8 @@ package http
 // "github.com/spf13/cobra"
 // "github.com/spf13/viper"
 // "github.com/urfave/negroni"
-// "github.com/yourusername/yourproject/config"
-// "github.com/yourusername/yourproject/middleware"
-// "github.com/yourusername/yourproject/routes"
-// "github.com/yourusername/yourproject/utils"
+
+var supportedHttpProtocol = "HTTP/1.0"
 
 func StartHttpServer(addr string, handler Handler) error {
 	if handler == nil {

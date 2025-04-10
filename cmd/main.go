@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/AbdullahCheema35/barebones-go-http-server.git/cmd/http"
 )
@@ -14,9 +15,12 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 
 func handleUsers(w http.ResponseWriter, r *http.Request) {
 	users := []string{"Alice", "Bob", "Charlie"}
-	var responseBody = fmt.Appendf(nil, "{\"users\": %v}", users)
+	var responseBody = fmt.Appendf(nil, "{\"users\": %v}\n", users)
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(responseBody)))
+	w.Header().Set("Server", "Go HTTP Server From Scratch")
+	w.Header().Set("Date", time.Now().Format(time.RFC1123))
+	w.Header().Set("Connection", "close")
 	w.Write(responseBody)
 }
 
