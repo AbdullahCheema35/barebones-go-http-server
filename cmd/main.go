@@ -25,7 +25,8 @@ func handleUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", handleRoot)
-	http.HandleFunc("/users", handleUsers)
-	http.StartHttpServer(":8080", nil)
+	customRouter := http.NewRouter()
+	customRouter.HandleFunc("/", handleRoot)
+	customRouter.HandleFunc("/users", handleUsers)
+	http.StartHttpServer(":8080", customRouter)
 }
